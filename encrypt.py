@@ -13,6 +13,7 @@ def should_process_file(path):
         '',
         '.txt',
         '.py',
+        '.pyw',
         '.js',
     ]
 
