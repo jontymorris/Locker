@@ -139,7 +139,13 @@ if __name__ == '__main__':
     option = args[1].lower()
     path = args[2]
 
-    password = getpass.getpass()
+    password = getpass.getpass('Password: ')
+    confirm = getpass.getpass('Retype password: ')
+
+    # check password is right
+    if password != confirm:
+        print('Passwords don\'t match!')
+        exit(0)
 
     # encrypt
     if option == 'encrypt':
