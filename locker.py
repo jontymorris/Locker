@@ -31,9 +31,12 @@ def encrypt_file(path, password):
     Encrypts the given the file with the password.
     '''
 
-    contents = read_file(path)
-    contents = vigenere.encrypt(contents, password)
-    write_file(path, contents)
+    try:
+        contents = read_file(path)
+        contents = vigenere.encrypt(contents, password)
+        write_file(path, contents)
+    except:
+        print('[Error] Failed to encrypt {}'.format(path))
 
 
 def decrypt_file(path, password):
@@ -41,9 +44,12 @@ def decrypt_file(path, password):
     Decrypts the given the file with the password.
     '''
 
-    contents = read_file(path)
-    contents = vigenere.decrypt(contents, password)
-    write_file(path, contents)
+    try:
+        contents = read_file(path)
+        contents = vigenere.decrypt(contents, password)
+        write_file(path, contents)
+    except:
+        print('[Error] Failed to decrypt {}'.format(path))
 
 
 def encrypt_folder(path, password):
