@@ -26,10 +26,31 @@ def write_file(path, contents):
     handle.close()
 
 
+def should_process_file(path):
+    '''
+    Returns whether the given file should be processed
+    based on if the file's extension is in a given whitelist.
+    '''
+
+    whitelist = [
+        '',
+        '.txt',
+        '.py',
+        '.js',
+    ]
+
+    extension = os.path.splitext(path)[1]
+
+    return extension.lower() in whitelist
+
+
 def encrypt_file(path, password):
     '''
     Encrypts the given the file with the password.
     '''
+
+    if not should_process_file(path):
+        return
 
     try:
         contents = read_file(path)
@@ -43,6 +64,9 @@ def decrypt_file(path, password):
     '''
     Decrypts the given the file with the password.
     '''
+
+    if not should_process_file(path):
+        return
 
     try:
         contents = read_file(path)
@@ -102,6 +126,10 @@ def show_usage():
 
 if __name__ == '__main__':
     args = sys.argv
+
+    # debug
+    args.append('encrypt')
+    args.append('~/Documents/')
 
     # require 2 arguments
     if len(args) < 3:
