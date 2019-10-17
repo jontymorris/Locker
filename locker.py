@@ -1,5 +1,6 @@
 import sys
 import os
+import argparse
 import getpass
 import encryptor
 
@@ -15,15 +16,12 @@ def show_usage():
 
 
 if __name__ == '__main__':
-    args = sys.argv
+    parser = argparse.ArgumentParser(description='Encrypting since 1553.')
 
-    # require 2 arguments
-    if len(args) < 3:
-        show_usage()
-        exit(0)
+    parser.add_argument('path', help='path to target file')
+    parser.add_argument('option', help='encrypt or decrypt')
 
-    option = args[1].lower()
-    path = args[2]
+    args = parser.parse_args()
 
     password = getpass.getpass('Password: ')
     confirm = getpass.getpass('Retype password: ')
@@ -34,12 +32,12 @@ if __name__ == '__main__':
         exit(0)
 
     # encrypt
-    if option == 'encrypt':
-        encryptor.encrypt(path, password)
+    if args.option.lower() == 'encrypt':
+        encryptor.encrypt(args.path, password)
 
     # decrypt
-    elif option == 'decrypt':
-        encryptor.decrypt(path, password)
+    elif args.option.lower() == 'decrypt':
+        encryptor.decrypt(args.path, password)
 
     # invalid
     else:
