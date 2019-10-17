@@ -39,21 +39,11 @@ if __name__ == '__main__':
 
     # encrypt
     if option == 'encrypt':
-        # folder
-        if encrypt.is_folder(path):
-            encrypt.encrypt_folder(path, password)
-        # file
-        else:
-            encrypt.encrypt_file(path, password)
+        encrypt.encrypt(path, password)
 
     # decrypt
     elif option == 'decrypt':
-        # folder
-        if encrypt.is_folder(path):
-            encrypt.decrypt_folder(path, password)
-        # file
-        else:
-            encrypt.decrypt_file(path, password)
+        encrypt.decrypt(path, password)
 
     # invalid
     else:

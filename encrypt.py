@@ -111,3 +111,29 @@ def decrypt_folder(path, password):
 
         else:
             decrypt_file(current_path, password)
+
+
+def encrypt(path, password):
+    '''
+    Encrypts the path. Supports both file's and folders.
+    '''
+
+    # folder
+    if is_folder(path):
+        encrypt_folder(path, password)
+    # file
+    else:
+        encrypt_file(path, password)
+
+
+def decrypt(path, password):
+    '''
+    Decrypts the path. Supports both file's and folders.
+    '''
+
+    # folder
+    if is_folder(path):
+        decrypt_folder(path, password)
+    # file
+    else:
+        decrypt_file(path, password)
