@@ -17,10 +17,6 @@ def show_usage():
 if __name__ == '__main__':
     args = sys.argv
 
-    # debug
-    args.append('encrypt')
-    args.append('~/Documents/')
-
     # require 2 arguments
     if len(args) < 3:
         show_usage()
