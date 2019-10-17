@@ -63,7 +63,7 @@ def encrypt_file(path, password):
         contents = read_file(path)
         contents = vigenere.encrypt(contents, password)
         write_file(path, contents)
-    except:
+    except Exception:
         print('[Error] Failed to encrypt {}'.format(path))
 
 
@@ -79,7 +79,7 @@ def decrypt_file(path, password):
         contents = read_file(path)
         contents = vigenere.decrypt(contents, password)
         write_file(path, contents)
-    except:
+    except Exception:
         print('[Error] Failed to decrypt {}'.format(path))
 
 
