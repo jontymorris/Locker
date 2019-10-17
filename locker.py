@@ -1,7 +1,7 @@
 import sys
 import os
 import getpass
-import encrypt
+import encryptor
 
 
 def show_usage():
@@ -39,11 +39,11 @@ if __name__ == '__main__':
 
     # encrypt
     if option == 'encrypt':
-        encrypt.encrypt(path, password)
+        encryptor.encrypt(path, password)
 
     # decrypt
     elif option == 'decrypt':
-        encrypt.decrypt(path, password)
+        encryptor.decrypt(path, password)
 
     # invalid
     else:
