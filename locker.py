@@ -16,6 +16,7 @@ def show_usage():
 
 
 if __name__ == '__main__':
+    # parse the arguments
     parser = argparse.ArgumentParser(description='Encrypting since 1553.')
 
     parser.add_argument('path', help='path to target file')
@@ -23,10 +24,11 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    # get the password
     password = getpass.getpass('Password: ')
     confirm = getpass.getpass('Retype password: ')
 
-    # check password is right
+    # check passwords match
     if password != confirm:
         print('Passwords don\'t match!')
         exit(0)
