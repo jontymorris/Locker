@@ -61,10 +61,12 @@ def encrypt_file(path, fernet):
     Encrypts the given file
     '''
 
-    contents = read_file(path)
-    contents = fernet.encrypt(contents)
-
-    write_file(path, contents)
+    try:
+        contents = read_file(path)
+        contents = fernet.encrypt(contents)
+        write_file(path, contents)
+    except Exception:
+        print('[Error] ' + path)
 
 
 def decrypt_file(path, fernet):
@@ -72,10 +74,12 @@ def decrypt_file(path, fernet):
     Decrypts the given file
     '''
 
-    contents = read_file(path)
-    contents = fernet.decrypt(contents)
-
-    write_file(path, contents)
+    try:
+        contents = read_file(path)
+        contents = fernet.decrypt(contents)
+        write_file(path, contents)
+    except Exception:
+        print('[Error] ' + path)
 
 
 def encrypt_folder(path, fernet):
