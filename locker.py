@@ -17,7 +17,7 @@ def show_usage():
 
 if __name__ == '__main__':
     # parse the arguments
-    parser = argparse.ArgumentParser(description='Encrypting since 1553.')
+    parser = argparse.ArgumentParser(description='Secure your file system')
 
     parser.add_argument('path', help='path to target file')
     parser.add_argument('option', help='encrypt or decrypt')
