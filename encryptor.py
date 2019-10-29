@@ -8,7 +8,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 def read_file(path):
     '''
-    Reads the given file and returns it's contents.
+    Reads the given file and returns its contents
     '''
 
     handle = open(path, 'rb')
@@ -20,7 +20,7 @@ def read_file(path):
 
 def write_file(path, contents):
     '''
-    Writes the contents to the given file.
+    Writes the contents to the given file
     '''
 
     handle = open(path, 'wb')
@@ -30,7 +30,7 @@ def write_file(path, contents):
 
 def is_folder(path):
     '''
-    Checks if the given path is a folder.
+    Checks if the given path is a folder
     '''
 
     return os.path.isdir(path)
@@ -38,7 +38,7 @@ def is_folder(path):
 
 def generate_fernet(password):
     '''
-    Generates the encryption token from given password
+    Generates the encryption object with given password
     '''
 
     password = bytes(password, "utf-8")
@@ -58,7 +58,7 @@ def generate_fernet(password):
 
 def encrypt_file(path, fernet):
     '''
-    Encrypts the given the file with the password.
+    Encrypts the given file
     '''
 
     contents = read_file(path)
@@ -69,7 +69,7 @@ def encrypt_file(path, fernet):
 
 def decrypt_file(path, fernet):
     '''
-    Decrypts the given the file with the password.
+    Decrypts the given file
     '''
 
     contents = read_file(path)
@@ -80,7 +80,7 @@ def decrypt_file(path, fernet):
 
 def encrypt_folder(path, fernet):
     '''
-    Recursively encrypts the given folder with the password.
+    Recursively encrypts the given folder
     '''
 
     for name in os.listdir(path):
@@ -95,7 +95,7 @@ def encrypt_folder(path, fernet):
 
 def decrypt_folder(path, fernet):
     '''
-    Recursively decrypts the given folder with the password.
+    Recursively decrypts the given folder
     '''
 
     for name in os.listdir(path):
@@ -110,7 +110,7 @@ def decrypt_folder(path, fernet):
 
 def encrypt(path, password):
     '''
-    Encrypts the path. Supports both file's and folders.
+    Encrypts the path, supports both files and folders
     '''
 
     fernet = generate_fernet(password)
@@ -125,7 +125,7 @@ def encrypt(path, password):
 
 def decrypt(path, password):
     '''
-    Decrypts the path. Supports both file's and folders.
+    Decrypts the path, supports both files and folders
     '''
 
     fernet = generate_fernet(password)
