@@ -1,24 +1,9 @@
-import vigenere
 import os
-
-
-def should_process_file(path):
-    '''
-    Returns whether the given file should be processed
-    based on if the file's extension is in a given whitelist.
-    '''
-
-    whitelist = [
-        '',
-        '.txt',
-        '.py',
-        '.pyw',
-        '.js',
-    ]
-
-    extension = os.path.splitext(path)[1]
-
-    return extension.lower() in whitelist
+import base64
+from cryptography.fernet import Fernet
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 
 def read_file(path):
@@ -26,7 +11,7 @@ def read_file(path):
     Reads the given file and returns it's contents.
     '''
 
-    handle = open(path, 'r', encoding='utf-8')
+    handle = open(path, 'rb')
     contents = handle.read()
     handle.close()
 
@@ -38,7 +23,7 @@ def write_file(path, contents):
     Writes the contents to the given file.
     '''
 
-    handle = open(path, 'w', encoding='utf-8')
+    handle = open(path, 'wb')
     handle.write(contents)
     handle.close()
 
@@ -51,39 +36,49 @@ def is_folder(path):
     return os.path.isdir(path)
 
 
-def encrypt_file(path, password):
+def generate_fernet(password):
+    '''
+    Generates the encryption token from given password
+    '''
+
+    password = bytes(password, "utf-8")
+
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=b'',
+        iterations=100000,
+        backend=default_backend()
+    )
+
+    key = base64.urlsafe_b64encode(kdf.derive(password))
+
+    return Fernet(key)
+
+
+def encrypt_file(path, fernet):
     '''
     Encrypts the given the file with the password.
     '''
 
-    if not should_process_file(path):
-        return
+    contents = read_file(path)
+    contents = fernet.encrypt(contents)
 
-    try:
-        contents = read_file(path)
-        contents = vigenere.encrypt(contents, password)
-        write_file(path, contents)
-    except Exception:
-        print('[Error] Failed to encrypt {}'.format(path))
+    write_file(path, contents)
 
 
-def decrypt_file(path, password):
+def decrypt_file(path, fernet):
     '''
     Decrypts the given the file with the password.
     '''
 
-    if not should_process_file(path):
-        return
+    contents = read_file(path)
+    contents = fernet.decrypt(contents)
 
-    try:
-        contents = read_file(path)
-        contents = vigenere.decrypt(contents, password)
-        write_file(path, contents)
-    except Exception:
-        print('[Error] Failed to decrypt {}'.format(path))
+    write_file(path, contents)
 
 
-def encrypt_folder(path, password):
+def encrypt_folder(path, fernet):
     '''
     Recursively encrypts the given folder with the password.
     '''
@@ -92,13 +87,13 @@ def encrypt_folder(path, password):
         current_path = os.path.join(path, name)
 
         if is_folder(current_path):
-            encrypt_folder(current_path, password)
+            encrypt_folder(current_path, fernet)
 
         else:
-            encrypt_file(current_path, password)
+            encrypt_file(current_path, fernet)
 
 
-def decrypt_folder(path, password):
+def decrypt_folder(path, fernet):
     '''
     Recursively decrypts the given folder with the password.
     '''
@@ -107,10 +102,10 @@ def decrypt_folder(path, password):
         current_path = os.path.join(path, name)
 
         if is_folder(current_path):
-            decrypt_file(current_path, password)
+            decrypt_folder(current_path, fernet)
 
         else:
-            decrypt_file(current_path, password)
+            decrypt_file(current_path, fernet)
 
 
 def encrypt(path, password):
@@ -118,12 +113,14 @@ def encrypt(path, password):
     Encrypts the path. Supports both file's and folders.
     '''
 
+    fernet = generate_fernet(password)
+
     # folder
     if is_folder(path):
-        encrypt_folder(path, password)
+        encrypt_folder(path, fernet)
     # file
     else:
-        encrypt_file(path, password)
+        encrypt_file(path, fernet)
 
 
 def decrypt(path, password):
@@ -131,9 +128,11 @@ def decrypt(path, password):
     Decrypts the path. Supports both file's and folders.
     '''
 
+    fernet = generate_fernet(password)
+
     # folder
     if is_folder(path):
-        decrypt_folder(path, password)
+        decrypt_folder(path, fernet)
     # file
     else:
-        decrypt_file(path, password)
+        decrypt_file(path, fernet)
