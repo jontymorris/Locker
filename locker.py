@@ -19,8 +19,8 @@ if __name__ == '__main__':
     # parse the arguments
     parser = argparse.ArgumentParser(description='Secure your file system')
 
-    parser.add_argument('path', help='path to target file')
     parser.add_argument('option', help='encrypt or decrypt')
+    parser.add_argument('path', help='path to target file')
 
     args = parser.parse_args()
 
